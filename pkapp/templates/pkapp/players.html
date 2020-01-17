@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<title>PKTOUR - Players</title>
+{% extends 'base.html' %}
+{% load bootstrap %}
+<head>
+	
+</head>
+<body>
+	{% block menu%}
+	<ul class="nav nav-pills">
+	  <li class="nav-item">
+	    <a class="nav-link active" href="{% url 'pkapp_index' %}">Home</a>
+	  </li>
+	  <li class="nav-item dropdown">
+	    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Opçoes</a>
+	    <div class="dropdown-menu">
+	      <a class="dropdown-item" href="{% url 'pkapp_players' %}">Players</a>
+	      <div class="dropdown-divider"></div>
+	      <a class="dropdown-item" href="{% url 'pkapp_torneios' %}">Torneios</a>
+	      <div class="dropdown-divider"></div>
+	      <a class="dropdown-item" href="{% url 'pkapp_etapas' %}">Etapas</a>
+	      <div class="dropdown-divider"></div>
+	      <a class="dropdown-item" href="{% url 'pkapp_admetapa' %}">Adm. Etapa</a>
+	    </div>
+	  </li>
+	  <li class="nav-item dropdown">
+	    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Consultas</a>
+	    <div class="dropdown-menu">
+	      <a class="dropdown-item" href="{% url 'pkapp_ranking' %}">Ranking</a>
+	   </li>
+<!--	  <li class="nav-item">
+	    <a class="nav-link" href="#">Link</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link disabled" href="#">Disabled</a>
+	  </li>-->
+	</ul>
+{% endblock %}
+{%block main%}
+<div class="row">
+	<div class="col">
+<table class="table table-striped">
+  <thead class="thead-light">
+	    <tr>
+	     <!-- <th scope="col" width="5%">ID</th>-->
+	      <th scope="col" width="40%">Player</th>
+	      <th scope="col" width="35%">Email</th>
+	      <th scope="col" width="25%">Telefone</th>
+	      <th scope="col" width="5%">Participaçoes</th>
+	    </tr>
+  </thead>
+  <tbody>
+  	{% for players in players%}
+  	<tr>
+  		<th scope="row">{{players.player}}</th>
+  		<td>{{players.email}}</td>
+  		<td>{{players.telefone}}</td>
+  		<td>{{players.participacoes}}</td>
+  	</tr>
+  	{% endfor %}
+  </tbody>
+  
+{% endblock %}
+
+</body>
+</html>
