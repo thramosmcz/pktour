@@ -14,6 +14,12 @@ class PlayerSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['id', 'player', 'email', 'telefone', 'participacoes']
 
 
+class RankingSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Ranking
+        fields = ['id', 'id_torneio_id', 'id_etapa_id', 'id_player_id', 'buy_inn', 'qtd_rebuy', 'posicao', 'pontuacao', 'premio']
+
+
 class TorneioSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Torneios

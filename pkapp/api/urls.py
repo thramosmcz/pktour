@@ -5,6 +5,7 @@ from pkapp.api import views as apiviews
 router = routers.DefaultRouter()
 router.register(r'etapas', apiviews.EtapaViewSet,basename='etapa')
 router.register(r'players', apiviews.PlayerViewSet,basename='player')
+router.register(r'ranking', apiviews.PlayerViewSet,basename='ranking')
 router.register(r'torneios', apiviews.TorneioViewSet,basename='torneio')
 
 urlpatterns = [

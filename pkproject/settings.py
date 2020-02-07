@@ -25,7 +25,7 @@ SECRET_KEY = '5z1jh-xb+il)9p3mfvdnid3i2!%na42170e3_om9^0+u+_%(ou'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -81,13 +81,23 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'pktour',
+        'USER': 'tournament',
+        'PASSWORD': 'senha@123',
+        'HOST': '127.0.0.1',
+        'PORT': '5433',
+        'CONN_MAX_AGE': 500,
+        },
+    'fmb': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'pktour',
         'USER': 'pktour',
         'PASSWORD': 'senha@123',
         'HOST': '127.0.0.1',
         'PORT': '5433',
         'CONN_MAX_AGE': 500,
-        }
     }
+
+}
 
 
 
