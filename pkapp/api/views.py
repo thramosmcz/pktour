@@ -55,20 +55,20 @@ class EtapaViewSet(viewsets.ViewSet):
         etapa = get_object_or_404(qset_etapa, pk=pk)
 
         qset_existing = Ranking.objects.filter(id_etapa=etapa.id,id_player__in=body_players_ids).values()
-        to_create = body_players_ids
+        to_create = body_players_ids.copy()
         for x in qset_existing:
             try:
-                print(x)
                 to_create.remove(x['id_player_id'])
             except ValueError:
                 pass
-        print(to_create)
 
         for id in to_create:
             r = Ranking( id_etapa=etapa, id_torneio = etapa.id_torneio, id_player = Players.objects.get(pk=id),
                          buy_inn = 1, qtd_rebuy = 0, posicao = 0, pontuacao = 0, premio = 0)
             r.save()
 
+        print(body_players_ids)
+        print(to_create)
         qset_ranking = Ranking.objects.filter(id_etapa=etapa.id,id_player__in=body_players_ids)
         serializer = RankingSerializer(qset_ranking, many=True)
 
