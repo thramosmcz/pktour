@@ -53,10 +53,10 @@
   <tbody>
   	{% for players in players%}
   	<tr>
-  		<th scope="row">{{players.player}}</th>
-  		<td>{{players.email}}</td>
-  		<td>{{players.telefone}}</td>
-  		<td>{{players.participacoes}}</td>
+  		<th scope="row" class="text-success">{{players.player}}</th>
+  		<td class="text-info">{{players.email}}</td>
+  		<td class="text-info">{{players.telefone}}</td>
+  		<td class="text-danger">{{players.participacoes}}</td>
   	</tr>
   	{% endfor %}
   </tbody>

@@ -53,11 +53,11 @@
   <tbody>
   	{% for torneios in torneios%}
   	<tr>
-  		<th scope="row">{{torneios.torneio}}</th>
-  		<td>{{torneios.vlr_buyinn}}</td>
-  		<td>{{torneios.vlr_rebuy}}</td>
-  		<td>{{torneios.vlr_jackpot}}</td>
-  		<td>{{torneios.qtd_etapas}}</td>
+  		<th scope="row" class="text-success">{{torneios.torneio}}</th>
+  		<td class="text-danger">{{torneios.vlr_buyinn}}</td>
+  		<td class="text-danger">{{torneios.vlr_rebuy}}</td>
+  		<td class="text-primary">{{torneios.vlr_jackpot}}</td>
+  		<td class="text-info">{{torneios.qtd_etapas}}</td>
   	</tr>
   	{% endfor %}
   </tbody>

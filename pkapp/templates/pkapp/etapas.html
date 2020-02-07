@@ -49,12 +49,12 @@
 	    </tr>
   </thead>
   <tbody>
-  	{% for etapas in etapas%}
+  	{% for etapas in etapas %}
   	<tr>
-  		<th scope="row">{{etapas.id_torneio.torneio}}</th>
-  		<td>{{etapas.etapa}}</td>
-  		<td>{{etapas.local}}</td>
-  		<td>{{etapas.data}}</td>
+  		<th class="text-success" scope="row">{{etapas.id_torneio.torneio}}</th>
+  		<td class="text-info">{{etapas.etapa}}</td>
+ 		<td class="text-info">{{etapas.local}}</td>
+ 		<td class="text-danger">{{etapas.data}}</td>
   	</tr>
   	{% endfor %}
   </tbody>

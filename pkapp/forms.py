@@ -21,5 +21,17 @@ class TorneiosRanking(ModelForm):
 		model = Ranking
 		fields = '__all__'
 
-# class AdmEtapa(ModelForm):
-# 	class Meta:
+class AdmEtapaForm(ModelForm):
+	class Meta:
+		model = Etapas
+		fields = '__all__'
+		#model = Players
+		#fields = '__all__'
+		#model = Ranking
+		#fields = '__all__'
+		#model = Torneios
+		#fields = '__all__'
+
+	def create_etapas_adm(self, etapa, etapas_ids):
+		for etapa_id in etapas_ids:
+			Etapas_Torneio.objects.create(etapa=etapa, etapa_id=etapa_id)
