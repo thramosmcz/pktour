@@ -56,10 +56,13 @@ class EtapaViewSet(viewsets.ViewSet):
 
         qset_existing = Ranking.objects.filter(id_etapa=etapa.id,id_player__in=body_players_ids).values()
         to_create = body_players_ids
-        try:
-            to_create.remove(list(map(lambda r: r['id'], qset_existing)))
-        except ValueError:
-            pass
+        for x in qset_existing:
+            try:
+                print(x)
+                to_create.remove(x['id_player_id'])
+            except ValueError:
+                pass
+        print(to_create)
 
         for id in to_create:
             r = Ranking( id_etapa=etapa, id_torneio = etapa.id_torneio, id_player = Players.objects.get(pk=id),
