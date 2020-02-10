@@ -31,20 +31,20 @@ class EtapaViewSet(viewsets.ViewSet):
 
         return Response(serializer.data)
 
-    @ranking.mapping.post
-    def update_ranking(self, request, pk=None):
-        json_data = json.loads(request.body)
-        body_ids = list(map(lambda j: j['id'], json_data))
-
-        qset_etapa = Etapas.objects.all()
-        etapa = get_object_or_404(qset_etapa, pk=pk)
-        db_ranking = Ranking.objects.filter(id_etapa=etapa.id).values()
-        db_ids = list(map(lambda j: j['id'], db_ranking))
-        print(body_ids)
-        print(db_ids)
-        print(set(body_ids).intersection(db_ids))
-
-        return Response("OK")
+    # @ranking.mapping.post
+    # def update_ranking(self, request, pk=None):
+    #     json_data = json.loads(request.body)
+    #     body_ids = list(map(lambda j: j['id'], json_data))
+    #
+    #     qset_etapa = Etapas.objects.all()
+    #     etapa = get_object_or_404(qset_etapa, pk=pk)
+    #     db_ranking = Ranking.objects.filter(id_etapa=etapa.id).values()
+    #     db_ids = list(map(lambda j: j['id'], db_ranking))
+    #     print(body_ids)
+    #     print(db_ids)
+    #     print(set(body_ids).intersection(db_ids))
+    #
+    #     return Response("OK")
 
     @action(detail=True, methods=['post'])
     def inscrito(self, request, pk=None):
@@ -54,7 +54,7 @@ class EtapaViewSet(viewsets.ViewSet):
         qset_etapa = Etapas.objects.all()
         etapa = get_object_or_404(qset_etapa, pk=pk)
 
-        qset_existing = Ranking.objects.filter(id_etapa=etapa.id,id_player__in=body_players_ids).values()
+        qset_existing = Ranking.objects.filter(id_etapa=etapa.id, id_player__in=body_players_ids).values()
         to_create = body_players_ids.copy()
         for x in qset_existing:
             try:
@@ -63,13 +63,11 @@ class EtapaViewSet(viewsets.ViewSet):
                 pass
 
         for id in to_create:
-            r = Ranking( id_etapa=etapa, id_torneio = etapa.id_torneio, id_player = Players.objects.get(pk=id),
-                         buy_inn = 1, qtd_rebuy = 0, posicao = 0, pontuacao = 0, premio = 0)
+            r = Ranking(id_etapa=etapa, id_torneio=etapa.id_torneio, id_player=Players.objects.get(pk=id),
+                        buy_inn=1, qtd_rebuy=0, posicao=0, pontuacao=0, premio=0)
             r.save()
 
-        print(body_players_ids)
-        print(to_create)
-        qset_ranking = Ranking.objects.filter(id_etapa=etapa.id,id_player__in=body_players_ids)
+        qset_ranking = Ranking.objects.filter(id_etapa=etapa.id, id_player__in=body_players_ids)
         serializer = RankingSerializer(qset_ranking, many=True)
 
         return Response(serializer.data)
@@ -77,12 +75,15 @@ class EtapaViewSet(viewsets.ViewSet):
     @inscrito.mapping.delete
     def inscrito_del(self, request, pk=None):
         json_data = json.loads(request.body)
-        body_players_ids = list(map(lambda j: j['id'], json_data))
+        if isinstance(json_data, list):
+            body_players_ids = list(map(lambda j: j['id'], json_data))
+        else:
+            body_players_ids = [json_data['id']]
 
         qset_etapa = Etapas.objects.all()
         etapa = get_object_or_404(qset_etapa, pk=pk)
 
-        qset_existing = Ranking.objects.filter(id_etapa=etapa.id,id_player__in=body_players_ids).delete()
+        qset_existing = Ranking.objects.filter(id_etapa=etapa.id, id_player__in=body_players_ids).delete()
 
         qset_ranking = Ranking.objects.filter(id_etapa=etapa.id)
         serializer = RankingSerializer(qset_ranking, many=True)
@@ -141,6 +142,43 @@ class RankingViewSet(viewsets.ViewSet):
         serializer = TorneioSerializer(torneio)
         return Response(serializer.data)
 
+    def create(self, request):
+        print("create")
+        return Response(json.dumps({'method': 'create'}))
+
+    def update(self, request, pk=None):
+        # print("update")
+        json_data = json.loads(request.body)
+        body_ranking_ids = list(map(lambda j: j['id'], json_data))
+        for j in json_data:
+            try:
+                # print(j)
+                r = Ranking.objects.get(pk=j['id'])
+                r.buy_inn = j['buy_inn']
+                r.qtd_rebuy = j['qtd_rebuy']
+                r.posicao = j['posicao']
+                r.pontuacao = j['pontuacao']
+                r.premio = j['premio']
+                r.save()
+            except Ranking.DoesNotExist:
+                pass
+
+        # print(json_data)
+        # print(body_ranking_ids)
+
+        qset_ranking = Ranking.objects.filter(id__in=body_ranking_ids)
+        serializer = RankingSerializer(qset_ranking, many=True)
+
+        return Response(serializer.data)
+
+    def partial_update(self, request, pk=None):
+        print("partial_update")
+        return Response(json.dumps({'method': 'partial_update'}))
+
+    def destroy(self, request, pk=None):
+        print("destroy")
+        return Response(json.dumps({'method': 'destroy'}))
+
     @action(methods=['get'], detail=True)
     def etapas(self, request, pk=None):
         qset_torneio = Torneios.objects.all()
@@ -150,18 +188,6 @@ class RankingViewSet(viewsets.ViewSet):
         serializer = EtapaSerializer(qset_etapa, many=True)
 
         return Response(serializer.data)
-
-    def create(self, request):
-        pass
-
-    def update(self, request, pk=None):
-        pass
-
-    def partial_update(self, request, pk=None):
-        pass
-
-    def destroy(self, request, pk=None):
-        pass
 
 
 class TorneioViewSet(viewsets.ViewSet):

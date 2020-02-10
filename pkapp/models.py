@@ -52,3 +52,6 @@ class Ranking(models.Model):
     posicao = models.IntegerField()
     pontuacao = models.IntegerField()
     premio = models.DecimalField(max_digits=7, decimal_places=2)
+
+    def __str__(self):
+        return self.id
